@@ -91,6 +91,8 @@ class MageApplication extends Application
 
             $this->runtime->setConfiguration($config['magephp']);
             $this->runtime->setLogger($logger);
+
+            $this->loadCustomTasksFromDirectory($this->runtime->getConfigOption('custom_tasks_directory', null));
             return;
         }
 
@@ -119,6 +121,28 @@ class MageApplication extends Application
                 }
             }
         }
+    }
+
+    /**
+     * Load custom tasks from a directory
+     *
+     * @return void
+     */
+    protected function loadCustomTasksFromDirectory($directory)
+    {
+        if (null === $directory) {
+            return;
+        }
+
+        $finder = new Finder();
+        $finder->files()->in($directory)->name('*.php');
+
+        /** @var SplFileInfo $file */
+        foreach ($finder as $file) {
+            require_once $file->getRealPath();
+        }
+
+        return;
     }
 
     /**

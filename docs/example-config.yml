@@ -27,5 +27,6 @@ magephp:
             post-release:
             post-deploy:
                 - magic
+    custom_tasks_directory: src/App/Deployment
     custom_tasks:
         - App\Deployment\MagicTask
